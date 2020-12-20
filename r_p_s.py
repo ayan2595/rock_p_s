@@ -1,36 +1,68 @@
 from random import randint
 
 #create a list of play options
-t = ["Rock", "Paper", "Scissors"]
+t = ["rock", "paper", "scissors"]
 
-#assign a random play to the computer
-computer = t[randint(0,2)]
+# Class Player
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.score = 0
+        self.choice = "" # Init choice to null
 
-#set player to False
-player = False
+def print_score(player_1, player_2):
+    print(player_1.name, ":", player_1.score, player_2.name, ":", player_2.score, "\n")
 
-while player == False:
-#set player to True
-    player = input("Rock, Paper, Scissors?")
-    if player == computer:
-        print("Tie!")
-    elif player == "Rock":
-        if computer == "Paper":
-            print("You lose!", computer, "covers", player)
+def update_score(player_1, player_2):
+    if player_1.choice.lower() == player_2.choice.lower():
+        print("Tie! No points for both!")
+    elif player_1.choice.lower() == "rock":
+        if player_2.choice == "paper":
+            print(player_2.name, "wins!", player_1.choice, "covers", player_2.choice)
+            player_2.score+=1
         else:
-            print("You win!", player, "smashes", computer)
-    elif player == "Paper":
-        if computer == "Scissors":
-            print("You lose!", computer, "cut", player)
+            print(player_1.name, "wins!", player_1.choice, "smashes", player_2.choice)
+            player_1.score+=1
+    elif player_1.choice.lower() == "paper":
+        if player_2.choice == "scissors":
+            print(player_2.name, "wins!", player_2.choice, "cut", player_1.choice)
+            player_2.score+=1
         else:
-            print("You win!", player, "covers", computer)
-    elif player == "Scissors":
-        if computer == "Rock":
-            print("You lose...", computer, "smashes", player)
+            print(player_1.name, "wins!", player_1.choice, "covers", player_2.choice)
+            player_1.score+=1
+    elif player_1.choice.lower() == "scissors":
+        if player_2.choice == "rock":
+            print(player_2.name, "wins!", player_2.choice, "smashes", player_1.choice)
+            player_2.score+=1
         else:
-            print("You win!", player, "cut", computer)
+            print(player_1.name, "wins!", player_1.choice, "cut", player_2.choice)
+            player_1.score+=1
     else:
-        print("That's not a valid play. Check your spelling!")
-    #player was set to True, but we want it to be False so the loop continues
-    player = False
-    computer = t[randint(0,2)]
+        print("That's not a valid entry. Check your spelling!")
+
+def play_computer(player):
+    comp = Player ("Computer") 
+    while True:
+        p_1 = input("Rock, Paper, Scissor? Else type Quit?\n")
+        if p_1.lower() == "quit":
+            print_score(player, comp)
+            break
+        else:
+            choice = t[randint(0,2)]
+            comp.choice = choice
+            player.choice = p_1
+            update_score(player, comp)
+
+
+def main():
+    #Check for refactor
+    name = input("Enter your name:")
+    p1 = Player(name)
+
+    play_computer(p1)
+
+    #Code for multiplayer
+
+
+if __name__ == "__main__":
+    main()
